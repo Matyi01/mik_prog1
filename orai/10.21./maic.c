@@ -2,12 +2,24 @@
 
 void szamologep();
 int beker(int min, int max);
+void parkolas();
 
 int main()
 {
-    szamologep();
+    // szamologep();
+    parkolas();
 
     return 0;
+}
+
+void parkolas()
+{
+    char jarmu = "s", nap = "h";
+    int percek = 0;
+    int oradij = 0, megkezdett_orak = 0;
+    int fizetendo = 0;
+
+    printf("Milyen jarmu parkol? ");
 }
 
 int beker(int min, int max)
