@@ -1,41 +1,54 @@
+/*⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~
+File nev: main.c
+Programozo: Holczer Mátyás
+E-mail: holczermatyi@gmail.com
+Datum: 2026. 10. 29.
+Neptun kod: D1KRAZ
+
+Az harmadik programozás házifeladat.
+⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~⌒^~*/
+
 #include <stdio.h>
 
 int Beker(int min, int max);
-double valodiBeker(int min, int max);
-void feladat2();
-void feladat3(int min, int max);
+double ValodiBeker(int min, int max);
+void Feladat2();
+void Feladat3(int min, int max);
+void Feladat4();
+void Egyenlegek(int egyenlegek[20]);
 
 int main()
 {
-    // Beker(1, 10);
-    // feladat2();
-    // feladat3(1, 100);
+    Beker(1, 10);
+    Feladat2();
+    Feladat3(1, 100);
+    Feladat4();
     return 0;
 }
 
 int Beker(int min, int max)
 {
-    int szam = 9999999;
-    while (szam < min || szam > max)
+    int szam;
+    do
     {
         printf("Adjon meg egy egesz szamot %d es %d kozott: ", min, max);
         scanf("%d", &szam);
-    }
+    } while (szam < min || szam > max);
     return szam;
 }
 
-double valodiBeker(int min, int max)
+double ValodiBeker(int min, int max)
 {
-    double szam = 9999999;
-    while (szam < min || szam > max)
+    double szam;
+    do
     {
         printf("Adjon meg egy valos szamot %d es %d kozott: ", min, max);
         scanf("%lf", &szam);
-    }
+    } while (szam < min || szam > max);
     return szam;
 }
 
-void feladat2()
+void Feladat2()
 {
     double ertekek[7][3];
     for (int i = 0; i < 7; i++)
@@ -43,7 +56,7 @@ void feladat2()
         for (int j = 0; j < 3; j++)
         {
             printf("%d. nap, %d. homerseklet\n", i + 1, j + 1);
-            ertekek[i][j] = valodiBeker(-40, 50);
+            ertekek[i][j] = ValodiBeker(-40, 50);
         }
     }
 
@@ -53,15 +66,15 @@ void feladat2()
         atlagok[i] = (double)(ertekek[i][0] + ertekek[i][1] + ertekek[i][2]) / 3;
     }
 
-    int min = 99999;
-    int max = -99999;
+    int min = 0;
+    int max = 0;
     for (int i = 0; i < 7; i++)
     {
-        if (atlagok[i] < min)
+        if (atlagok[i] < atlagok[min])
         {
             min = i;
         }
-        if (atlagok[i] > max)
+        if (atlagok[i] > atlagok[max])
         {
             max = i;
         }
@@ -75,7 +88,7 @@ void feladat2()
     {
         osszeg += atlagok[i];
     }
-    double atlag = osszeg / 7;
+    double atlag = osszeg / 7.0;
     if (atlag <= 5)
     {
         printf("Tel\n");
@@ -86,11 +99,11 @@ void feladat2()
     }
     else
     {
-        printf("Nyar");
+        printf("Nyar\n");
     }
 }
 
-void feladat3(int min, int max)
+void Feladat3(int min, int max)
 {
     int tipp_db = 0;
     while (min <= max)
@@ -98,16 +111,16 @@ void feladat3(int min, int max)
         int tipp = min + (max - min) / 2;
         int be = 0;
         tipp_db++;
-        printf("\n%d. tipp\nErre a szamra gomdoltal: %d?\n1 - igen\n2 - nem\n", tipp_db, tipp);
-        scanf("%d", &be);
+        printf("\n%d. tipp\nErre a szamra gondoltal: %d?\n1 - igen\n2 - nem\n", tipp_db, tipp);
+        be = Beker(1, 2);
         switch (be)
         {
         case (1):
-            printf("Ezaz kitaláltam %d lepesbol!\n", tipp_db);
+            printf("Ezaz kitalaltam %d lepesbol!\n", tipp_db);
             return;
         case (2):
             printf("Kisebb vagy nagyobb a szam mint %d?\n1 - kisebb\n2 - nagyobb\n", tipp);
-            scanf("%d", &be);
+            be = Beker(1, 2);
             switch (be)
             {
             case (1):
@@ -122,34 +135,119 @@ void feladat3(int min, int max)
     printf("Hiba: Ellentmondasos valaszokat adtal meg!\n");
 }
 
-/*
-Adott egy kis bank, mondjuk a PTO Bank. A banknak elég kevés ügyfele van,
-mert nem nagyon értenek a bankoláshoz, ezért legfeljebb 20 ügyfél esetén
-látják át a dolgokat. Az ügyfeleknek sorszámuk van, amellyel hivatkozni
-tudnak magukra és másokra is. A sorszámok 1-el kezdődnek és 20-ig tartanak.
-A bank ügyfeleinek egyenlegét egy tömb tárolja. Ahhoz, hogy az ügyfelek
-pénzmozgást tudjanak kezdeményezni, be kell menniük a bankfiókba személyesen
-és az ügyintéző segítségét kell kérniük. Az elkésztett programot az ügyintéző
-használja. Az ügyintézőnek kezdetben fel kell töltenie az egyenlegeket
-tartalmazó tömböt értékekkel, amikor az ügyfelek beviszik a pénzüket a bankba,
-hogy számlát nyissanak. Minden ügyfél tud befizetni a számlájára, mely nem jár
-többletköltséggel. Minden ügyfél képes pénzt felvenni a számlájáról, azonban
-ezután már díjat számol fel a bank, méghozzá a felvett összeg 10 %-át levonja
-a számlán maradt pénzösszegből. Ha ez nem lehetséges, akkor nem engedélyezi
-annyi pénz felvételét a rendszer. Minden ügyfél tud utalni is másik ügyfeleknek.
-Ha bankon belül utal, akkor ismernie kell a sorszámát a címzettnek, viszont
-ebben az esetben az utalás ingyenes. Ha bankon kívülre szeretne az ügyfél
-utalni, akkor annak szinten 10%-os díja van, amelyet a visszamaradó egyenlegből
-von le a bank. Ha ez nem lehetséges, akkor nem engedélyezi annyi pénz utalását
-a rendszer. Minden egyes személyes ügyintézés díja 5000 Ft.
+void Feladat4()
+{
+    int egyenlegek[20];
+    int be = 0;
+    int osszeg = 0;
+    int teljes = 0;
+    int honnan = 0;
+    int hova = 0;
 
-Készítsen egy programot, amely képes a PTO Bank ügyfeleinek az egyenlegeinek
-kezelésére. A program úgy fusson, hogy egymás után bármennyi műveletet el
-lehessen végezni, bármelyik ügyféllel (konzolos menürendszer). Fontos, hogy
-a futtatás során bármikor ki lehessen listázni az ügyfelek egyenlegeit. Az
-egyenlegek kezelésében mindig naprakésznek kell lennie a programnak tehát,
-ha valaki pénzt fizet be, vagy vesz fel, akkor az egyenlege azonnal frissüljön.
-Bankon belüli átutalásnál mind a feladó, mind a kedvezményezett egyenlege is
-frissüljön! A bank nem hitelez, így az egyenlegek nem csökkenhetnek le 0 Ft
-alá. Figyeljen oda, hogy a banki díjakat is jól kezelje a rendszer!
-*/
+    printf("Toltse fel az egyenlegeket a szamlakra!\n");
+    for (int i = 0; i < 20; i++)
+    {
+        printf("Azonosito: %d\nEgyenleg: ", i + 1);
+        egyenlegek[i] = Beker(0, 2147483647);
+    }
+
+    while (1)
+    {
+        printf("\nMit szeretne?\n0 - kilepes\n1 - egyenlegek\n2 - befizetes\n3 - felvetel\n4 - utalas bankon belul\n5 - utalas bankon kivul\n");
+        be = Beker(0, 5);
+        switch (be)
+        {
+        case (0):
+            printf("Viszlat\n");
+            return;
+
+        case (1):
+            Egyenlegek(egyenlegek);
+            break;
+
+        case (2):
+            printf("Melyik szamlara szeretne befizetni? ");
+            be = Beker(1, 20);
+            printf("Mennyi penzt szeretne befizetni? ");
+            osszeg = Beker(0, 2147483647);
+
+            if (egyenlegek[be - 1] + osszeg >= 5000)
+            {
+                egyenlegek[be - 1] += osszeg;
+                egyenlegek[be - 1] -= 5000;
+                printf("Sikeres befizetes! Uj egyenleg: %d Ft\n", egyenlegek[be - 1]);
+            }
+            else
+            {
+                printf("A befizetett osszeg nem fedezi az 5000 Ft-os ugyintezesi dijat!\n");
+            }
+            break;
+
+        case (3):
+            printf("Melyik szamlarol szeretne felvenni? ");
+            be = Beker(1, 20);
+            printf("Mennyi penzt szeretne felvenni? ");
+            osszeg = Beker(0, 2147483647);
+
+            teljes = 5000 + osszeg + (int)(osszeg * 0.10);
+            if (egyenlegek[be - 1] >= teljes)
+            {
+                egyenlegek[be - 1] -= teljes;
+                printf("Sikeres felvetel! Uj egyenleg: %d Ft\n", egyenlegek[be - 1]);
+            }
+            else
+            {
+                printf("Nincs elegendo fedezet! (Szukseges: %d Ft, Meglevo: %d Ft)\n", teljes, egyenlegek[be - 1]);
+            }
+            break;
+
+        case (4):
+            printf("Melyik szamlarol szeretne utalni? ");
+            honnan = Beker(1, 20);
+            printf("Melyik szamlara szeretne utalni? ");
+            hova = Beker(1, 20);
+            printf("Mennyi penzt szeretne utalni? ");
+            osszeg = Beker(0, 2147483647);
+
+            if (egyenlegek[honnan - 1] >= osszeg + 5000)
+            {
+                egyenlegek[honnan - 1] -= osszeg + 5000;
+                egyenlegek[hova - 1] += osszeg;
+                printf("Sikeres utalas!\n");
+            }
+            else
+            {
+                printf("Nincs elegendo fedezet az utalashoz es az ugyintezesi dijhoz!\n");
+            }
+            break;
+
+        case (5):
+            printf("Melyik szamlarol szeretne utalni? ");
+            honnan = Beker(1, 20);
+            printf("Mennyi penzt szeretne utalni? ");
+            osszeg = Beker(0, 2147483647);
+
+            teljes = 5000 + osszeg + (int)(osszeg * 0.10);
+            if (egyenlegek[honnan - 1] >= teljes)
+            {
+                egyenlegek[honnan - 1] -= teljes;
+                printf("Sikeres utalas!\n");
+            }
+            else
+            {
+                printf("Nincs elegendo fedezet! (Szukseges: %d Ft, Meglevo: %d Ft)\n", teljes, egyenlegek[honnan - 1]);
+            }
+            break;
+        }
+    }
+}
+
+void Egyenlegek(int egyenlegek[20])
+{
+    printf("\n==========\n");
+    for (int i = 0; i < 20; i++)
+    {
+        printf("%d: %d\n", i + 1, egyenlegek[i]);
+    }
+    printf("==========\n");
+}
